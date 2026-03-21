@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 5
     strategy:
       matrix:
-        app: [front, service]
+        app: [frontend, backend]
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
