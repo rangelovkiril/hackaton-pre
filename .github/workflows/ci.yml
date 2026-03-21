@@ -2,7 +2,6 @@ name: CI
 
 on:
   push:
-    branches: [main]
   pull_request:
 
 concurrency:
@@ -11,12 +10,28 @@ concurrency:
 
 jobs:
   check:
+    name: Check ${{ matrix.app }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
       matrix:
         app: [frontend, backend]
     steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-      - run: cd ${{ matrix.app }} && bun install --frozen-lockfile && bun run check
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: cd ${{ matrix.app }} && bun install --frozen-lockfile
+
+      - name: Lint & format
+        run: cd ${{ matrix.app }} && bunx biome check .
+
+      - name: Typecheck
+        run: cd ${{ matrix.app }} && bunx tsc --noEmit
+
+      - name: Build
+        if: matrix.app == 'frontend'
+        run: cd ${{ matrix.app }} && bun run build
