@@ -1,0 +1,4 @@
+.env
+
+broker/data/
+broker/log/

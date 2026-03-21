@@ -1,0 +1,56 @@
+x-defaults: &defaults
+  restart: unless-stopped
+  networks: [internal]
+  security_opt:
+    - no-new-privileges:true
+
+x-logging: &logging
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+networks:
+  internal:
+
+services:
+  backend:
+    <<: [*defaults, *logging]
+    build: backend/
+    env_file: .env
+    ports:
+      - "3000:3000"
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+
+  frontend:
+    <<: [*defaults, *logging]
+    build: frontend/
+    env_file: .env
+    ports:
+      - "3001:3001"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  mosquitto:
+    <<: [*defaults, *logging]
+    image: eclipse-mosquitto:2.0.20
+    container_name: mosquitto
+    expose:
+      - "1883"
+    volumes:
+      - ./broker/config:/mosquitto/config:ro
+      - ./broker/data:/mosquitto/data
+      - ./broker/log:/mosquitto/log
+    healthcheck:
+      test: ["CMD-SHELL", "mosquitto_pub -t healthcheck -n -q 1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    read_only: true
+    tmpfs:
+      - /tmp
