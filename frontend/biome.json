@@ -1,28 +1,28 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.4.8/schema.json",
-	"linter": {
-		"enabled": true,
-		"rules": {
-			"recommended": true
-		}
-	},
-	"formatter": {
-		"enabled": true,
-		"indentStyle": "tab",
-		"lineWidth": 100
-	},
-	"javascript": {
-		"formatter": {
-			"quoteStyle": "double",
-			"semicolons": "always"
-		}
-	},
-	"css": {
-		"parser": {
-			"tailwindDirectives": true
-		}
-	},
-	"files": {
-		"includes": ["app/**", "src/**", "*.ts", "*.tsx", "*.json", "*.mjs"]
-	}
+  "$schema": "https://biomejs.dev/schemas/2.4.8/schema.json",
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "lineWidth": 100
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "files": {
+    "includes": ["app/**", "src/**", "*.ts", "*.tsx", "*.json", "*.mjs"]
+  }
 }

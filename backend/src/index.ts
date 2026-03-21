@@ -6,5 +6,5 @@ app.get("/health", () => new Response("ok", { status: 200 }));
 
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`,
-  `Env var: ${process.env.TEST!}`,
+  `Env var: ${process.env.TEST ?? "undefined"}`,
 );
