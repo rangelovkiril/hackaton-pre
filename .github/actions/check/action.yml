@@ -1,0 +1,26 @@
+name: Check
+description: Lint, typecheck, and optionally build an app
+
+inputs:
+  app:
+    required: true
+  build:
+    default: "false"
+
+runs:
+  using: composite
+  steps:
+    - uses: oven-sh/setup-bun@v2
+
+    - shell: bash
+      run: cd ${{ inputs.app }} && bun install --frozen-lockfile
+
+    - shell: bash
+      run: cd ${{ inputs.app }} && bunx biome check .
+
+    - shell: bash
+      run: cd ${{ inputs.app }} && bunx tsc --noEmit
+
+    - if: inputs.build == 'true'
+      shell: bash
+      run: cd ${{ inputs.app }} && bun run build
